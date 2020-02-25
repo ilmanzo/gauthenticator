@@ -1,0 +1,7 @@
+name "gauthenticator"
+description "Act as google authenticator device"
+authors "Andrea Manzini"
+copyright "Copyright © 2020, Andrea Manzini"
+license "mit"
+targetType "library"
+

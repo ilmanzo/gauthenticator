@@ -1,0 +1,16 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/gauthenticator
+gauthenticator.so
+gauthenticator.dylib
+gauthenticator.dll
+gauthenticator.a
+gauthenticator.lib
+gauthenticator-test-*
+*.exe
+*.o
+*.obj
+*.lst
+secret.pem
