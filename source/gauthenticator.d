@@ -21,6 +21,7 @@ SOFTWARE.
 module gauthenticator;
 
 import std.stdio;
+import std.digest.sha;
 
 class GAuthenticator
 {
@@ -28,8 +29,16 @@ class GAuthenticator
     // HMAC-based One Time Password(HOTP)
     public string getHOTPToken(const string secret, const ulong interval)
     {
-        /*
+        
         auto key=base32decode(secret);
+        SHA1 hash;
+        hash.start();
+        hash.put(key);
+        ubyte[20] sha1sum = hash.finish();
+        int offset=(sha1sum[19] & 15);
+
+        
+        /*
         hash = HMAC-SHA1(key)
         offset = last nibble of hash
         truncatedHash := hash[offset..offset+3]  //4 bytes starting at the offset
@@ -52,20 +61,21 @@ class GAuthenticator
     }
 
     //RFC 4648
-    public int[] base32decode(const string message)
+    package ubyte[] base32decode(const string message)
     {
         int buffer = 0;
         int bitsLeft = 0;
-        int[] result;
+        ubyte[] result;
         for (int i = 0; i < message.length; i++)
         {
             int ch = message[i];
-            writeln(ch);
+            if (ch == '=')
+                break;
             if (ch == ' ' || ch == '\t' || ch == '\r' || ch == '\n' || ch == '-')
             {
                 continue;
             }
-            buffer <<= 5;
+            buffer = buffer << 5;
 
             // Deal with commonly mistyped characters
             if (ch == '0')
@@ -88,14 +98,15 @@ class GAuthenticator
             }
             else if (ch >= '2' && ch <= '7')
             {
-                ch -= '2' - 26;
+                ch -= ('2' - 26);
             }
 
             buffer |= ch;
             bitsLeft += 5;
             if (bitsLeft >= 8)
             {
-                result ~= (buffer >> (bitsLeft - 8));
+                int c = (buffer >> (bitsLeft - 8));
+                result ~= cast(byte)(c & 0xff);
                 bitsLeft -= 8;
             }
 
@@ -103,11 +114,29 @@ class GAuthenticator
         return result;
 
     }
-
+    //test base32 decoder
     unittest
     {
-        const base32 = "gr6d 5br7 25s6 vnck v4vl hlao re======";
+        auto ga = new GAuthenticator;
+        byte[] expected = ['F', 'O', 'O', 'B', 'A', 'R'];
+        auto message = ga.base32decode("IZHU6QSBKI");
+        assert(message == expected);
+        expected = ['1', '2', '3', '4', '5', 't', 'e', 's', 't'];
+        message = ga.base32decode("GEZDGNBVORSXG5A=");
+        assert(message == expected);
+    }
 
+
+    // SHA1 test
+    unittest
+    {
+        SHA1 hash;
+        hash.start();
+        ubyte[] data = ['a', 'b', 'c'];
+        hash.put(data);
+        ubyte[20] result = hash.finish();
+        //writeln(toHexString(result));
+        assert(toHexString(result)=="A9993E364706816ABA3E25717850C26C9CD0D89D");
     }
 
     /*
@@ -123,12 +152,3 @@ class GAuthenticator
 
 }
 
-unittest
-{
-    writeln("ciao");
-
-    auto ga = new GAuthenticator();
-    auto expected = cast(int[]) "FOOBAR";
-    writeln(ga.base32decode("IZHU6QSBKIFA===="));
-    writeln(expected);
-}
