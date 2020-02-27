@@ -1,7 +1,7 @@
 ## Google Authenticator
 A small D library to generate the google authenticator code.
 
-inspired from https://github.com/tilaklodha/google-authenticator
+inspired from https://github.com/tilaklodha/google-authenticator 
 
 - Install D Language https://dlang.org/ 
 - Install Dub package manager 
@@ -15,9 +15,9 @@ The secret token usually is given to the user on the first configuration as a ba
 
 The library exposes two functions:
 
-- getHOTPToken
+- **getHOTPToken**
    given a "secret" and a time interval, returns the 6-digit HOTP Token as a string
-- getTOTPToken
+- **getTOTPToken**
    given a "secret", returns the 6-digit TOTP Token as a string using the current time
 
 more details on the algorithm on https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_algorithm
