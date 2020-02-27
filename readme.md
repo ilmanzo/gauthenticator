@@ -20,7 +20,7 @@ The library exposes two functions:
 - getTOTPToken
    given a "secret", returns the 6-digit TOTP Token as a string using the current time
 
-
+more details on the algorithm on https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_algorithm
 
 
 
