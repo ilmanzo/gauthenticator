@@ -10,7 +10,9 @@ inspired from https://github.com/tilaklodha/google-authenticator
 
 
 The OTP auth code works on the secret token and the current time. 
+
 The time on your local machine should be in sync according to NTP.
+
 The secret token usually is given to the user on the first configuration as a base32-encoded string or acquired via QR code.
 
 The library exposes two functions:
