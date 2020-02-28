@@ -3,9 +3,10 @@ A small D library to generate the google authenticator code.
 
 inspired from https://github.com/tilaklodha/google-authenticator 
 
-- Install D Language https://dlang.org/ 
+- Install a D Language compiler https://dlang.org/ 
 - Install Dub package manager 
     - On OSX run `brew install dub`.
+    - On Ubuntu `snap install --classic dub`
     - Follow instructions on https://code.dlang.org/ for other OSes.
 
 
@@ -23,6 +24,26 @@ The library exposes two functions:
    given a "secret", returns the 6-digit TOTP Token as a string using the current time
 
 more details on the algorithm on https://en.wikipedia.org/wiki/HMAC-based_One-time_Password_algorithm
+
+usage:
+1. add the library as a dependency in your dub project:
+
+```
+$ dub add gauthenticator
+```
+2. use the library by calling getTOTPToken() or getHOTPToken() functions
+
+```
+import std.stdio;
+import gauthenticator;
+
+void main()
+{
+	writeln(getTOTPToken("foobarbaz"));
+}
+```    
+    
+
 
 
 
