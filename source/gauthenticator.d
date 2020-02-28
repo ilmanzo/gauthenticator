@@ -27,7 +27,7 @@ import std.format : format;
 
 // code adapted from https://github.com/tilaklodha/google-authenticator
 
-// HMAC-based One Time Password(HOTP)
+/// HMAC-based One Time Password(HOTP)
 public string getHOTPToken(const string secret, const ulong interval)
 {
     //secret is a base32 encoded string. Converts to a byte array
@@ -48,7 +48,7 @@ public string getHOTPToken(const string secret, const ulong interval)
     return format("%06d",h12);
 }
 
-//Time-based One Time Password(TOTP)
+/// Time-based One Time Password(TOTP)
 public string getTOTPToken(const string secret)
 {
     //The TOTP token is just a HOTP token seeded with every 30 seconds.
@@ -57,7 +57,7 @@ public string getTOTPToken(const string secret)
     return getHOTPToken(secret, interval);
 }
 
-//RFC 4648
+//RFC 4648 base32 implementation
 private ubyte[] base32decode(const string message)
 {
     int buffer = 0;
